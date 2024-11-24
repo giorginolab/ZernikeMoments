@@ -1,5 +1,5 @@
 
-add_executable(zernike3d main.cpp)
+add_executable(zernike3d zernike3d.cpp)
 target_link_libraries(zernike3d 3DZM)
 
 add_executable(sphere_test sphere_test.cpp)

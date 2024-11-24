@@ -1,5 +1,4 @@
 /*
-
                           3D Zernike Moments
     Copyright (C) 2003 by Computer Graphics Group, University of Bonn
            http://www.cg.cs.uni-bonn.de/project-pages/3dsearch/
@@ -51,72 +50,39 @@ for more information, see the paper:
 
 // ---- std includes ----
 #include <cstring>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
+#include <vector>
 
-// reads a voxel grid from a binary file
-template<class TIn, class TOut>
-TOut* ReadGrid (const char* _fname, int& _dim)
-{
-    std::ifstream infile (_fname, std::ios_base::binary | std::ios_base::in);
 
-    vector<double> tempGrid;
-    TIn temp;
-
-    // read the grid values
-    while (infile.read ((char*)(&temp), sizeof (TIn)))
-    {
-        tempGrid.push_back ((double)temp);
-    }
-
-    int d = tempGrid.size ();
-    double f = std::pow<double> ((double)d, 1.0/3.0);
-
-    _dim = floor (f+0.5);
-
-    TOut* result = new TOut [d];
-    for (int i=0; i<d; ++i)
-    {
-        result[i] = tempGrid[i];
-    }
-
-    return result;
-}
-
-int main (int argc, char** argv)
-{
-    if (argc != 3)
-    {
-        std::cout << "Usage: ZernikeMoments " <<
-                     "filename " <<
-                     "<MaxOrder> " << std::endl;
+int main(int argc, char** argv) {
+    if (argc != 3) {
+        std::cout << "Usage: ZernikeMoments <filename> <MaxOrder>\n";
         return 0;
     }
 
-    //int d;
-    //double* voxels = ReadGrid<float, double> (argv[1], d);
+    std::string inputFile(argv[1]);
+    int maxOrder = std::stoi(argv[2]);
 
+    // Extract base filename without extension
+    size_t lastDot = inputFile.find_last_of('.');
+    // If not found, lastDot == std::string::npos --> take the whole string
+    std::string baseName = inputFile.substr(0, lastDot);
 
-    // .inv file name
-    char  buf[200];
-    char* ch_ptr = strrchr (argv[1], '.');
-    char* invFName;
-    if (ch_ptr)
-    {
-        strncpy (buf, argv[1], ch_ptr - argv[1]);
-        buf[ch_ptr - argv[1]] = '\0';
-    }
-    else
-    {
-        fprintf (stderr, "No extension in input filename? : %s\n", argv[1]);
-    }
+    // Compute the zernike descriptors
+    ZernikeDescriptor<double, float> zd(inputFile.c_str(), maxOrder);
 
-    invFName = buf;
+    // Generate output .inv filename
+    std::string invFileName = baseName + ".inv";
+    std::cout << "Saving invariants file: " << invFileName << '\n';
+    zd.SaveInvariants(invFileName.c_str());
 
-    // compute the zernike descriptors
-    ZernikeDescriptor<double, float> zd (argv[1], atoi (argv[2]));
+    // Generate output .txt filename
+    std::string invFileNameTXT = baseName + ".txt";
+    std::cout << "Saving invariants file: " << invFileNameTXT << '\n';
+    zd.SaveInvariantsTXT(invFileNameTXT.c_str());
 
-    strcat (invFName, ".inv");
-    std::cout << "Saving invariants file: " << invFName << " \n";
-
-    // save them into an .inv file
-    zd.SaveInvariants (invFName);
+    return 0;
 }
