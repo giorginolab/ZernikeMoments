@@ -102,6 +102,9 @@ public:
     void SaveInvariants (
         const char* _fName      /**< name of the output file */
         );
+    void SaveInvariantsTXT (
+        const char* _fName      /**< name of the output file */
+        );
     /// Access to invariants
     T1D GetInvariants ();
 

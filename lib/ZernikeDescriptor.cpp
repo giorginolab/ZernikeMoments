@@ -340,3 +340,21 @@ void ZernikeDescriptor<T,TIn>::SaveInvariants (const char* _fName)
         outfile.write ((char*)(&temp), sizeof(float));
     }
 }
+
+
+template<class T, class TIn>
+void ZernikeDescriptor<T,TIn>::SaveInvariantsTXT (const char* _fName)
+{
+    std::ofstream outfile (_fName, std::ios_base::out);
+
+    int dim = invariants_.size ();
+    outfile << dim << std::endl;
+
+    for (int i=0; i<dim; ++i)
+    {
+        outfile << invariants_[i] << " ";
+    }
+
+    outfile << std::endl;   
+}
+
