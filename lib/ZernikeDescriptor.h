@@ -103,7 +103,7 @@ public:
         const char* _fName      /**< name of the output file */
         );
     /// Access to invariants
-    T2D GetInvariants ();
+    T1D GetInvariants ();
 
 private:
     // ---- private helper functions ----

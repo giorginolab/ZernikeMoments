@@ -306,6 +306,12 @@ void ZernikeDescriptor<T,TIn>::ComputeInvariants ()
 
 
 template<class T, class TIn>
+typename ZernikeDescriptor<T, TIn>::T1D ZernikeDescriptor<T, TIn>::GetInvariants() {
+    return invariants_;
+}
+
+
+template<class T, class TIn>
 void ZernikeDescriptor<T,TIn>::SaveInvariants (const char* _fName)
 {
     std::ofstream outfile (_fName, std::ios_base::binary | std::ios_base::out);
