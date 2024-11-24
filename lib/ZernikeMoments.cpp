@@ -268,7 +268,7 @@ void ZernikeMoments<VoxelT,MomentT>::ComputeGCoefficients ()
         } // l
     } // n
 //DD
-    std::cout << countCoeffs << std::endl;
+//    std::cout << countCoeffs << std::endl;
 //DD
 }
 
